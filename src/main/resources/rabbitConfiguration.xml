@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <context:annotation-config></context:annotation-config>
+
+    <context:property-placeholder location="classpath:config.properties" system-properties-mode="OVERRIDE"/>
+
+    <bean id="connectionFactory" class="cn.rabbit.ChannelFactory" scope="singleton">
+        <property name="address" value="172.21.107.206,172.21.107.128,172.21.107.129"/>
+        <property name="userName" value="oneplus_admin"/>
+        <property name="password" value="oneplus123ABC"/>
+        <property name="virtualHost" value="/oneplus"/>
+    </bean>
+
+    <bean id="rabbitTemplate" class="cn.rabbit.RabbitTemplate">
+        <property name="factory" ref="connectionFactory"/>
+    </bean>
+
+    <bean class="cn.rabbit.QueueDeclare" id="queueDeclare1">
+        <property name="name" value="oneplus-test2-1"/>
+        <property name="channelFactory" ref="connectionFactory"/>
+    </bean>
+
+    <bean class="cn.rabbit.QueueDeclare" id="queueDeclare2">
+        <property name="name" value="oneplus-test2-2"/>
+        <property name="channelFactory" ref="connectionFactory"/>
+    </bean>
+
+    <bean class="cn.rabbit.QueueDeclare" id="queueDeclare3">
+        <property name="name" value="oneplus-test2-3"/>
+        <property name="channelFactory" ref="connectionFactory"/>
+    </bean>
+
+    <bean class="cn.rabbit.QueueDeclare" id="queueDeclare4">
+        <property name="name" value="oneplus-test2-4"/>
+        <property name="channelFactory" ref="connectionFactory"/>
+    </bean>
+
+    <bean class="cn.rabbit.QueueDeclare" id="queueDeclare5">
+        <property name="name" value="oneplus-test2-6"/>
+        <property name="channelFactory" ref="connectionFactory"/>
+    </bean>
+
+    <bean class="cn.rabbit.QueueDeclare" id="queueDeclare7">
+        <property name="name" value="oneplus-test2-7"/>
+        <property name="channelFactory" ref="connectionFactory"/>
+    </bean>
+
+    <bean id="producerHandler" class="cn.rabbit.test.TestProducerHandler"/>
+    <bean id="consumerHandler" class="cn.rabbit.test.TestConsumerHandler"/>
+
+    <bean class="cn.rabbit.ExchangeDeclare" id="exchangeDeclare">
+        <property name="name" value="test-1"/>
+        <property name="type" value="fanout"/>
+        <property name="channelFactory" ref="connectionFactory"/>
+        <property name="queueBinds">
+            <list>
+                <bean class="cn.rabbit.QueueBind">
+                    <property name="queue" value="oneplus-test2-1"/>
+                </bean>
+                <bean class="cn.rabbit.QueueBind">
+                    <property name="queue" value="oneplus-test2-2"/>
+                </bean>
+                <bean class="cn.rabbit.QueueBind">
+                    <property name="queue" value="oneplus-test2-3"/>
+                </bean>
+                <bean class="cn.rabbit.QueueBind">
+                    <property name="queue" value="oneplus-test2-4"/>
+                </bean>
+                <bean class="cn.rabbit.QueueBind">
+                    <property name="queue" value="oneplus-test2-6"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="exchangeDeclare1" class="cn.rabbit.ExchangeDeclare">
+        <property name="name" value="test-2"/>
+        <property name="type" value="direct"/>
+        <property name="channelFactory" ref="connectionFactory"/>
+        <property name="queueBinds">
+            <list>
+                <bean class="cn.rabbit.QueueBind">
+                  <property name="queue" value="oneplus-test2-7"/>
+                  <property name="routingKey" value="test-2"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+
+
+</beans>

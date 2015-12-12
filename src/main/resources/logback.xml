@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="LOG_SRV" value="rabbit"/>
+	<property name="LOG_HOME" value="/log/${LOG_SRV}"/>
+
+	<property name="LOG_LEVEL" value="debug" />
+	<property name="LOG_ERROR" value="error" />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<Encoding>UTF-8</Encoding>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} {%thread} %-5level ${LOG_SRV} %X{oneplusLogId} %logger{50} %msg%n</pattern>
+		</layout>
+	</appender>
+
+	<logger name="org.springframework" level="${LOG_LEVEL}">
+		<appender-ref ref="console"/>
+	</logger>
+
+	<root name="cn.rabbit" level="${LOG_LEVEL}">
+		<appender-ref ref="console"/>
+	</root>
+</configuration>
