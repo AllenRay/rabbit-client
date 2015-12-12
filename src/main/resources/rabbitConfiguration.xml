@@ -6,6 +6,8 @@
 
     <context:annotation-config></context:annotation-config>
 
+    <context:component-scan base-package="cn.rabbit"/>
+
     <context:property-placeholder location="classpath:config.properties" system-properties-mode="OVERRIDE"/>
 
     <bean id="connectionFactory" class="cn.rabbit.ChannelFactory" scope="singleton">
@@ -16,7 +18,7 @@
     </bean>
 
     <bean id="rabbitTemplate" class="cn.rabbit.RabbitTemplate">
-        <property name="factory" ref="connectionFactory"/>
+        <property name="channelFactory" ref="connectionFactory"/>
     </bean>
 
     <bean class="cn.rabbit.QueueDeclare" id="queueDeclare1">
@@ -48,9 +50,6 @@
         <property name="name" value="oneplus-test2-7"/>
         <property name="channelFactory" ref="connectionFactory"/>
     </bean>
-
-    <bean id="producerHandler" class="cn.rabbit.test.TestProducerHandler"/>
-    <bean id="consumerHandler" class="cn.rabbit.test.TestConsumerHandler"/>
 
     <bean class="cn.rabbit.ExchangeDeclare" id="exchangeDeclare">
         <property name="name" value="test-1"/>
