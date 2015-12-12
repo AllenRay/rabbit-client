@@ -6,8 +6,6 @@
 
 <context:annotation-config></context:annotation-config>
 
-
-
 <bean id="channelFactory" class="cn.rabbit.ChannelFactory" scope="singleton"> //定义Connection Factory，
  <property name="addresses" value="172.21.xxx.206,172.21.xxx.128,172.21.xxx.129"></property>//连接字符串。如果是多个以逗号隔开,如果端口号不是默认的5672，那么格式就是172.21.107.206:xxxx,172.21.107.128:xxxx,172.21.107.129,ip和post 用冒号隔开
   //如果下面三个参数不传入，默认将会使用guest/guest并且virtual host是 “/”,在生产环境下，guest 用户将会被删除。
@@ -46,6 +44,7 @@
         </list>
     </property>
 </bean>
+
 
 --定义producer handler，消息发送ack或者nack 后会调用此方法。根据exchange 和 routing key 来进行绑定，routing key 支 *，# 匹配
 --* 表示一个单词，# 表示多个单词，用“.”分开
