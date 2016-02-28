@@ -19,6 +19,7 @@
 
     <bean id="rabbitTemplate" class="cn.rabbit.RabbitTemplate">
         <property name="channelFactory" ref="connectionFactory"/>
+         <property name="messageConsumedCountCache" ref="messageConsumedCountCache"/>
     </bean>
 
     <bean class="cn.rabbit.QueueDeclare" id="queueDeclare1">
@@ -90,6 +91,61 @@
         </property>
     </bean>
 
+    <bean id="redisCache" class="com.oneplus.common.utils.RedisCache">
+        <property name="isEnable" value="${redis.isEnable}"></property>
+    </bean>
+
+    <!-- 主从做负载均衡 -->
+    <bean id="jedisShardInfoMaster" class="redis.clients.jedis.JedisShardInfo">
+        <constructor-arg index="0" value="${redis.host.master}" />
+        <constructor-arg index="1" value="${redis.port.master}" type="int" />
+    </bean>
+
+    <bean id="jedisShardInfoSlave0" class="redis.clients.jedis.JedisShardInfo">
+        <constructor-arg index="0" value="${redis.host.slave0}" />
+        <constructor-arg index="1" value="${redis.port.slave0}" type="int" />
+    </bean>
+
+    <bean id="jedisShardInfoSlave1" class="redis.clients.jedis.JedisShardInfo">
+        <constructor-arg index="0" value="${redis.host.slave1}" />
+        <constructor-arg index="1" value="${redis.port.slave1}" type="int" />
+    </bean>
+
+    <bean id="jedisShardInfoSlave2" class="redis.clients.jedis.JedisShardInfo">
+        <constructor-arg index="0" value="${redis.host.slave2}" />
+        <constructor-arg index="1" value="${redis.port.slave2}" type="int" />
+    </bean>
+
+    <!-- 写操作只能在master上执行 -->
+    <bean id="writeJedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig" />
+        <constructor-arg index="1" value="${redis.host.master}" />
+        <constructor-arg index="2" value="${redis.port.master}" type="int" />
+    </bean>
+
+    <!-- 读操作可在master && slave负载均衡 -->
+    <bean id="readShardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig" />
+        <constructor-arg index="1">
+            <list>
+                <ref bean="jedisShardInfoMaster" />
+                <ref bean="jedisShardInfoSlave0"/>
+                <ref bean="jedisShardInfoSlave1"/>
+                <ref bean="jedisShardInfoSlave2"/>
+            </list>
+        </constructor-arg>
+    </bean>
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxActive"     value="${redis.pool.maxActive}" />
+        <property name="maxIdle"       value="${redis.pool.maxIdle}" />
+        <property name="maxWait"       value="${redis.pool.maxWait}" />
+        <property name="testOnBorrow"  value="${redis.pool.testOnBorrow}" />
+        <property name="testOnReturn"  value="${redis.pool.testOnReturn}" />
+    </bean>
+
+    <bean id="messageConsumedCountCache" class="cn.rabbit.cache.impl.RedisMessageConsumedCountCache">
+        <property name="redisCache" ref="redisCache"/>
+    </bean>
 
 
 </beans>

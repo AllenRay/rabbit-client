@@ -10,7 +10,7 @@
 连接字符串。如果是多个以逗号隔开,如果端口号不是默认的5672，那么格式就是172.21.107.206:xxxx,172.21.107.128:xxxx,172.21.107.129,ip和post 用冒号隔开
 如果下面userName,password,virtualHost三个参数不传入，默认将会使用guest/guest并且virtual host是 “/”,在生产环境下，guest 用户将会被删除。
 
-<bean id="channelFactory" class="cn.rabbit.ChannelFactory" scope="singleton">
+<bean id="channelFactory" class="cn.com.oneplus.common.rabbit.ChannelFactory" scope="singleton">
  <property name="addresses" value="172.21.xxx.206,172.21.xxx.128,172.21.xxx.129"></property>
  <property name="userName" value="admin"/>
  <property name="password" value="123ABC"/>
@@ -18,33 +18,33 @@
 </bean>
 
 定义 Rabbit template,在定义模板类的时候，可以将此模板绑定queue/exchange/routing key. 这样在发送和消息消费的时候不需要传入queue/exchange/routing key
-<bean id="rabbitTemplate" class="cn.rabbit.RabbitTemplate">
+<bean id="rabbitTemplate" class="cn.com.oneplus.common.rabbit.RabbitTemplate">
    <property name="factory" ref="channelFactory"/>
 </bean>
 
 定义queue，注意queue的定义必须放在Exchange前面，否则在绑定的时候会出错
-<bean class="cn.rabbit.QueueDeclare" id="queueDeclare1">
+<bean class="cn.com.oneplus.common.rabbit.QueueDeclare" id="queueDeclare1">
     <property name="name" value="oneplus-test2-1"/>
     <property name="channelFactory" ref="channelFactory"/>
 </bean>
 
-<bean class="cn.rabbit.QueueDeclare" id="queueDeclare2">
+<bean class="cn.com.oneplus.common.rabbit.QueueDeclare" id="queueDeclare2">
     <property name="name" value="oneplus-test2-2"/>
     <property name="channelFactory" ref="channelFactory"/>
 </bean>
 
 定义Exchange
 并且进行绑定
-<bean class="cn.rabbit.ExchangeDeclare" id="exchangeDeclare">
+<bean class="cn.com.oneplus.common.rabbit.ExchangeDeclare" id="exchangeDeclare">
         <property name="channelFactory" ref="channelFactory"/>
     <property name="name" value="test-1"/>
     <property name="type" value="fanout"/>
     <property name="queueBinds">
         <list>
-          <bean class="com.oneplus.common.rabbit.QueueBind">
+          <bean class="com.oneplus.common.com.oneplus.common.rabbit.QueueBind">
               <property name="queue" value="oneplus-test2-1"/>
           </bean>
-          <bean class="com.oneplus.common.rabbit.QueueBind">
+          <bean class="com.oneplus.common.com.oneplus.common.rabbit.QueueBind">
               <property name="queue" value="oneplus-test2-2"/>
           </bean>
         </list>
@@ -55,7 +55,7 @@
  定义producer handler，消息发送ack或者nack 后会调用此方法。根据exchange 和 routing key 来进行绑定，routing key 支 *，# 匹配
  * 表示一个单词，# 表示多个单词，用“.”分开
 
-@cn.rabbit.ProducerHandler(exchange = "${exchange}",routingKey="${routingKey}")
+@cn.com.oneplus.common.rabbit.ProducerHandler(exchange = "${exchange}",routingKey="${routingKey}")
 public class TestProducerHandler extends ProducerHandler {
     @Override
     public void handle(Message message) {
@@ -66,7 +66,7 @@ public class TestProducerHandler extends ProducerHandler {
 定义Consumerhandler，消息received后，并且转换为Message对象后，将会回调此方法，Message的messagebody是消息的业务对象。
 返回true表示消息消费成功，返回false表示nack。并且将会requeue。
 
-@cn.rabbit.ConsumerHandler(queue="${queue}")
+@cn.com.oneplus.common.rabbit.ConsumerHandler(queue="${queue}")
 public class TestConsumerHandler extends ConsumerHandler {
     @Override
     public boolean handle(Message message) {
