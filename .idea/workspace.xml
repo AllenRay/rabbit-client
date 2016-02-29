@@ -2,6 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6119de08-ce3c-4b3f-a200-c5d011e45e93" name="Default" comment="refactory">
+      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__com_alibaba_fastjson_1_2_6.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__com_fasterxml_jackson_core_jackson_annotations_2_6_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__com_fasterxml_jackson_core_jackson_core_2_6_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__com_fasterxml_jackson_core_jackson_databind_2_6_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__com_oneplus_commons_3_0_3_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__commons_codec_commons_codec_1_6.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__org_apache_commons_commons_pool2_2_3.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__redis_clients_jedis_2_8_0.xml" afterPath="" />
       <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\ChannelFactory.java" afterPath="" />
       <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\ConsumerHandler.java" afterPath="" />
       <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\ExchangeDeclare.java" afterPath="" />
@@ -65,11 +73,14 @@
       <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\sender\OneplusSimpleMessageSender.java" afterPath="" />
       <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\utils\Constants.java" afterPath="" />
       <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\utils\MessageUtils.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\resources\config.properties" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\resources\federation-configuration.xml" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\resources\logback.xml" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\resources\rabbitConfiguration.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\maven-status\maven-compiler-plugin\testCompile\default-testCompile\inputFiles.lst" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/cn.rabbit-1.0-SNAPSHOT-sources.jar" afterPath="$PROJECT_DIR$/target/cn.rabbit-1.0-SNAPSHOT-sources.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/cn.rabbit-1.0-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/target/cn.rabbit-1.0-SNAPSHOT.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rabbit-client.iml" afterPath="$PROJECT_DIR$/rabbit-client.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="rabbit-q.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -93,18 +104,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ProducerHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/ProducerHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="22" column="18" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="QueueBind.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/QueueBind.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -240,8 +239,8 @@
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.25">
-              <caret line="135" column="23" selection-start-line="135" selection-start-column="23" selection-end-line="135" selection-end-column="23" />
+            <state vertical-scroll-proportion="-34.82143">
+              <caret line="89" column="17" selection-start-line="89" selection-start-column="17" selection-end-line="89" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -259,11 +258,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HandlerService.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="HandlerService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/handler/HandlerService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.78500706">
+            <state vertical-scroll-proportion="0.0">
               <caret line="66" column="63" selection-start-line="66" selection-start-column="63" selection-end-line="66" selection-end-column="63" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6038647">
+              <caret line="25" column="47" selection-start-line="25" selection-start-column="36" selection-end-line="25" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -303,7 +315,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/rabbit/lyra/internal/util/Assert.java" />
         <option value="$PROJECT_DIR$/src/main/java/rabbit/lyra/internal/util/Reflection.java" />
         <option value="$PROJECT_DIR$/src/main/java/rabbit/lyra/internal/ConsumerDelegate.java" />
         <option value="$PROJECT_DIR$/src/main/java/rabbit/lyra/internal/QueueDeclaration.java" />
@@ -351,9 +362,10 @@
         <option value="$PROJECT_DIR$/src/main/java/rabbit/lyra/event/DefaultChannelListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/rabbit/retry/SimpleRetryTemplate.java" />
         <option value="$PROJECT_DIR$/src/main/java/rabbit/handler/ConsumerHandler.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/rabbit/consumer/SimpleMessageConsumer.java" />
         <option value="$PROJECT_DIR$/src/main/java/rabbit/handler/HandlerService.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -382,7 +394,7 @@
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="cn.rabbit" />
+          <option name="myItemId" value="rabbit client" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -392,7 +404,7 @@
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="cn.rabbit" />
+          <option name="myItemId" value="rabbit client" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -469,7 +481,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rabbit" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -496,6 +516,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="rabbit" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="consumer" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1019,7 +1043,7 @@
       <workItem from="1453427498379" duration="2105000" />
       <workItem from="1453978534376" duration="58000" />
       <workItem from="1456643014644" duration="1141000" />
-      <workItem from="1456713512007" duration="2600000" />
+      <workItem from="1456713512007" duration="5972000" />
     </task>
     <task id="LOCAL-00001" summary="rabbit client">
       <created>1449905917662</created>
@@ -1055,7 +1079,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="179540000" />
+    <option name="totallyTimeSpent" value="182912000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1932" height="1176" extended-state="0" />
@@ -1072,7 +1096,7 @@
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27136752" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27136752" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25860372" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1164,14 +1188,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/lyra/config/ConnectionConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/lyra/config/ConsumerConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1665,14 +1681,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.25">
-          <caret line="135" column="23" selection-start-line="135" selection-start-column="23" selection-end-line="135" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/consumer/SimpleMessageConsumer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1685,8 +1693,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/handler/HandlerService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.78500706">
+        <state vertical-scroll-proportion="0.0">
           <caret line="66" column="63" selection-start-line="66" selection-start-column="63" selection-end-line="66" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-34.82143">
+          <caret line="89" column="17" selection-start-line="89" selection-start-column="17" selection-end-line="89" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6038647">
+          <caret line="25" column="47" selection-start-line="25" selection-start-column="36" selection-end-line="25" selection-end-column="47" />
           <folding />
         </state>
       </provider>
