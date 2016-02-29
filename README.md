@@ -93,3 +93,4 @@ template 提供了很多模版方法，可供使用
         rabbitTemplate.receive("mail-queue"）
         });
 
+

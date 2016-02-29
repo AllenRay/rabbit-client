@@ -1,85 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6119de08-ce3c-4b3f-a200-c5d011e45e93" name="Default" comment="refactory">
-      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__com_alibaba_fastjson_1_2_6.xml" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__com_fasterxml_jackson_core_jackson_annotations_2_6_4.xml" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__com_fasterxml_jackson_core_jackson_core_2_6_4.xml" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__com_fasterxml_jackson_core_jackson_databind_2_6_4.xml" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__com_oneplus_commons_3_0_3_SNAPSHOT.xml" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__commons_codec_commons_codec_1_6.xml" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__org_apache_commons_commons_pool2_2_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\.idea\libraries\Maven__redis_clients_jedis_2_8_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\ChannelFactory.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\ConsumerHandler.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\ExchangeDeclare.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\Message.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\MessageChannelCallback.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\ProducerHandler.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\QueueBind.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\QueueDeclare.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\RabbitTemplate.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\consumer\OneplusSimpleMessageConsumer.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\exception\RabbitChannelException.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\exception\RabbitConnectionException.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\exception\RabbitMessageReceiveException.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\exception\RabbitMessageSendException.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\handler\ConsumerHandler.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\handler\Handler.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\handler\HandlerService.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\handler\ProducerHandler.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\ConnectionOptions.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\Connections.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\config\ChannelConfig.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\config\Config.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\config\ConfigurableChannel.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\config\ConfigurableConnection.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\config\ConnectionConfig.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\config\ConsumerConfig.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\config\RecoveryPolicies.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\config\RecoveryPolicy.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\config\RetryPolicies.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\config\RetryPolicy.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\event\ChannelListener.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\event\ConnectionListener.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\event\ConsumerListener.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\event\DefaultChannelListener.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\event\DefaultConnectionListener.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\event\DefaultConsumerListener.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\Binding.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\ChannelHandler.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\ConnectionHandler.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\ConsumerDeclaration.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\ConsumerDelegate.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\QueueDeclaration.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\RecurringPolicy.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\RecurringStats.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\ResourceDeclaration.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\RetryableResource.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\util\Addresses.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\util\ArrayListMultiMap.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\util\Assert.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\util\Collections.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\util\Exceptions.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\util\Reflection.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\util\concurrent\InterruptableWaiter.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\util\concurrent\NamedThreadFactory.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\internal\util\concurrent\ReentrantCircuit.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\lyra\util\Duration.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\messageConverter\MessageConverter.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\messageConverter\hessian\HessianMessageConverter.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\messageConverter\protostuff\ProtoStuffMessageConverter.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\retry\OneplusRetryTemplate.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\sender\OneplusSimpleMessageSender.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\utils\Constants.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\src\main\java\com\oneplus\common\rabbit\utils\MessageUtils.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\rabbit-q\target\maven-status\maven-compiler-plugin\testCompile\default-testCompile\inputFiles.lst" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/cn.rabbit-1.0-SNAPSHOT-sources.jar" afterPath="$PROJECT_DIR$/target/cn.rabbit-1.0-SNAPSHOT-sources.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/cn.rabbit-1.0-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/target/cn.rabbit-1.0-SNAPSHOT.jar" />
+    <list default="true" id="6119de08-ce3c-4b3f-a200-c5d011e45e93" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rabbit-client.iml" afterPath="$PROJECT_DIR$/rabbit-client.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="rabbit-q.iws" />
@@ -250,9 +173,11 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/consumer/SimpleMessageConsumer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="72" column="88" selection-start-line="72" selection-start-column="88" selection-end-line="72" selection-end-column="88" />
+              <caret line="111" column="80" selection-start-line="111" selection-start-column="80" selection-end-line="111" selection-end-column="80" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#3063#4164#0" expanded="true" />
+                <element signature="e#4163#4164#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -274,8 +199,8 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6038647">
-              <caret line="25" column="47" selection-start-line="25" selection-start-column="36" selection-end-line="25" selection-end-column="47" />
+            <state vertical-scroll-proportion="0.8679245">
+              <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -1043,7 +968,7 @@
       <workItem from="1453427498379" duration="2105000" />
       <workItem from="1453978534376" duration="58000" />
       <workItem from="1456643014644" duration="1141000" />
-      <workItem from="1456713512007" duration="5972000" />
+      <workItem from="1456713512007" duration="8512000" />
     </task>
     <task id="LOCAL-00001" summary="rabbit client">
       <created>1449905917662</created>
@@ -1075,24 +1000,31 @@
       <option name="project" value="LOCAL" />
       <updated>1456644112511</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="md 描述">
+      <created>1456745988887</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1456745988887</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="182912000" />
+    <option name="totallyTimeSpent" value="185452000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1932" height="1176" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32936507" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29400197" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27630284" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16027533" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1108,7 +1040,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32936507" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -1126,7 +1057,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="rabbit client" />
     <MESSAGE value="refactory" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactory" />
+    <MESSAGE value="md 描述" />
+    <option name="LAST_COMMIT_MESSAGE" value="md 描述" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1681,16 +1613,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/consumer/SimpleMessageConsumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="72" column="88" selection-start-line="72" selection-start-column="88" selection-end-line="72" selection-end-column="88" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/handler/HandlerService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1707,13 +1629,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/consumer/SimpleMessageConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="111" column="80" selection-start-line="111" selection-start-column="80" selection-end-line="111" selection-end-column="80" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3063#4164#0" expanded="true" />
+            <element signature="e#4163#4164#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6038647">
-          <caret line="25" column="47" selection-start-line="25" selection-start-column="36" selection-end-line="25" selection-end-column="47" />
+        <state vertical-scroll-proportion="0.8679245">
+          <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
           <folding />
         </state>
       </provider>
