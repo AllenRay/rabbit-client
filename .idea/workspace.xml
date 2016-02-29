@@ -1,8 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6119de08-ce3c-4b3f-a200-c5d011e45e93" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+    <list default="true" id="6119de08-ce3c-4b3f-a200-c5d011e45e93" name="Default" comment="md 描述">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\ChannelFactory.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\ConsumerHandler.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\ExchangeDeclare.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\Message.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\MessageChannelCallback.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\ProducerHandler.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\QueueBind.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\QueueDeclare.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\RabbitTemplate.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\consumer\SimpleMessageConsumer$1.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\consumer\SimpleMessageConsumer.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\exception\RabbitChannelException.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\exception\RabbitConnectionException.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\exception\RabbitMessageReceiveException.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\exception\RabbitMessageSendException.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\handler\ConsumerHandler.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\handler\Handler.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\handler\HandlerService.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\handler\ProducerHandler.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\ConnectionOptions.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\Connections.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\config\ChannelConfig.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\config\Config.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\config\ConfigurableChannel.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\config\ConfigurableConnection.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\config\ConnectionConfig.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\config\ConsumerConfig.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\config\RecoveryPolicies.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\config\RecoveryPolicy.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\config\RetryPolicies.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\config\RetryPolicy.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\event\ChannelListener.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\event\ConnectionListener.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\event\ConsumerListener.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\event\DefaultChannelListener.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\event\DefaultConnectionListener.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\event\DefaultConsumerListener.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\Binding.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ChannelHandler$1.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ChannelHandler$2.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ChannelHandler$ChannelShutdownListener$1.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ChannelHandler$ChannelShutdownListener.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ChannelHandler.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ConnectionHandler$1.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ConnectionHandler$2.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ConnectionHandler$3.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ConnectionHandler$ConnectionShutdownListener$1.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ConnectionHandler$ConnectionShutdownListener.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ConnectionHandler.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ConsumerDeclaration.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ConsumerDelegate.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\QueueDeclaration.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\RecurringPolicy.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\RecurringStats.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\ResourceDeclaration.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\RetryableResource.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\Addresses.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\ArrayListMultiMap$1$1.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\ArrayListMultiMap$1.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\ArrayListMultiMap.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\Assert.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\Collections.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\Exceptions.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\Reflection.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\concurrent\InterruptableWaiter$1.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\concurrent\InterruptableWaiter$Sync.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\concurrent\InterruptableWaiter.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\concurrent\NamedThreadFactory.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\concurrent\ReentrantCircuit$1.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\concurrent\ReentrantCircuit$Sync.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\internal\util\concurrent\ReentrantCircuit.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\lyra\util\Duration.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\messageConverter\MessageConverter.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\messageConverter\hessian\HessianMessageConverter.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\messageConverter\protostuff\ProtoStuffMessageConverter.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\retry\SimpleRetryTemplate.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\sender\SimpleMessageSender$1.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\sender\SimpleMessageSender$2.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\sender\SimpleMessageSender.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\utils\Constants.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\classes\rabbit\utils\MessageUtils.class" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\cn.rabbit-1.0-SNAPSHOT-sources.jar" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\cn.rabbit-1.0-SNAPSHOT.jar" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\maven-archiver\pom.properties" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\maven-status\maven-compiler-plugin\compile\default-compile\createdFiles.lst" afterPath="" />
+      <change type="DELETED" beforePath="E:\rabbit-q\target\maven-status\maven-compiler-plugin\compile\default-compile\inputFiles.lst" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="rabbit-q.iws" />
@@ -27,33 +113,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="QueueBind.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/QueueBind.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-              <folding>
-                <element signature="e#275#276#0" expanded="false" />
-                <element signature="e#303#304#0" expanded="false" />
-                <element signature="e#345#346#0" expanded="false" />
-                <element signature="e#379#380#0" expanded="false" />
-                <element signature="e#414#415#0" expanded="false" />
-                <element signature="e#445#446#0" expanded="false" />
-                <element signature="e#493#494#0" expanded="false" />
-                <element signature="e#533#534#0" expanded="false" />
-                <element signature="e#570#571#0" expanded="false" />
-                <element signature="e#603#604#0" expanded="false" />
-                <element signature="e#655#656#0" expanded="false" />
-                <element signature="e#699#700#0" expanded="false" />
-                <element signature="e#748#749#0" expanded="false" />
-                <element signature="e#780#781#0" expanded="false" />
-                <element signature="e#843#844#0" expanded="false" />
-                <element signature="e#885#886#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="QueueDeclare.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/QueueDeclare.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -193,14 +252,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8679245">
-              <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+            <state vertical-scroll-proportion="-25.433332">
+              <caret line="89" column="10" selection-start-line="89" selection-start-column="10" selection-end-line="89" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -392,62 +461,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rabbit-q" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rabbit-q" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rabbit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rabbit-q" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rabbit-q" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rabbit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="consumer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -471,11 +484,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\rabbit-q" />
       <recent name="E:\rabbit-q\src\main\java" />
       <recent name="E:\rabbit-q\src\main\java\cn\rabbit" />
       <recent name="E:\rabbit-q\src\main\java\cn\rabbit\test" />
       <recent name="E:\rabbit-q\src\main\resources" />
-      <recent name="E:\rabbit-q\src\main\java\cn\rabbit\messageConverter\kyro" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="cn.rabbit.test" />
@@ -968,7 +981,7 @@
       <workItem from="1453427498379" duration="2105000" />
       <workItem from="1453978534376" duration="58000" />
       <workItem from="1456643014644" duration="1141000" />
-      <workItem from="1456713512007" duration="8512000" />
+      <workItem from="1456713512007" duration="8938000" />
     </task>
     <task id="LOCAL-00001" summary="rabbit client">
       <created>1449905917662</created>
@@ -1010,11 +1023,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="185452000" />
+    <option name="totallyTimeSpent" value="185878000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1932" height="1176" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1028,7 +1041,7 @@
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27136752" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27136752" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25860372" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1120,16 +1133,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/lyra/config/ConsumerConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/rabbit/lyra/config/RecoveryPolicies.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1646,8 +1649,16 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8679245">
-          <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+        <state vertical-scroll-proportion="-25.433332">
+          <caret line="89" column="10" selection-start-line="89" selection-start-column="10" selection-end-line="89" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
