@@ -35,6 +35,7 @@
         </bean>
 
 4. 定义Exchange,并且进行绑定
+
         <bean class="rabbit.ExchangeDeclare" id="exchangeDeclare">
         <property name="channelFactory" ref="channelFactory"/>
         <property name="name" value="test-1"/>
