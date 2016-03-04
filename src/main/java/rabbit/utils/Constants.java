@@ -1,9 +1,9 @@
 package rabbit.utils;
 
 /**
- * Created by allen lei on 2015/12/15.
+ * Created by allen lei on 2016/3/3.
  */
 public class Constants {
 
-    public final static String MESSAGE_KEY_PRRFIX = "message";
+    public static final String QUEUE = "queue";
 }
