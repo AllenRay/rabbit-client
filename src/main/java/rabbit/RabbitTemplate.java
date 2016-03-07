@@ -1,5 +1,7 @@
 package  rabbit;
 
+import rabbit.consumer.DelayMessageConsumer;
+import rabbit.consumer.RetryMessageConsumer;
 import rabbit.consumer.SimpleMessageConsumer;
 import  rabbit.exception.RabbitChannelException;
 import  rabbit.exception.RabbitConnectionException;
@@ -187,6 +189,59 @@ public class RabbitTemplate{
 
         }
     }
+
+    /**
+     * use rabbit delay message plugin to support delay.
+     * the delay logic should be configuration.
+     * please reference DelayQueueConfig
+     * @param queue
+     * @param fetchCount
+     */
+    public void receiveMessageWithDelay(final String queue,int fetchCount){
+        final Channel channel = channelFactory.getChannel();
+        try {
+            //consuming(queue, fetchCount, channel);
+            channel.basicQos(fetchCount);
+            channel.basicConsume(queue,false,new DelayMessageConsumer(channel,this.handlerService,messageConverter,queue,this));
+        }catch (Exception e){
+            //will close channel if occur exception,like NullPointException and others.
+            //so we need recovery channel after exception occured.
+            logger.error("Receive message failed,the error is {} ",e);
+            throw new RabbitChannelException("Receive message failed,the error is: "+e);
+
+        }
+    }
+
+    public void receiveMessageWithDelay(final String queue){
+        this.receiveMessageWithDelay(queue,1);
+    }
+
+    /**
+     * use spring retry to support.
+     * currently,the retry logic is hard code,
+     * will retry three times.
+     * @param queue
+     * @param fetchCount
+     */
+    public void receiveMessageWithRetry(final String queue,int fetchCount){
+        final Channel channel = channelFactory.getChannel();
+        try {
+            //consuming(queue, fetchCount, channel);
+            channel.basicQos(fetchCount);
+            channel.basicConsume(queue,false,new RetryMessageConsumer(channel,this.handlerService,messageConverter,queue));
+        }catch (Exception e){
+            //will close channel if occur exception,like NullPointException and others.
+            //so we need recovery channel after exception occured.
+            logger.error("Receive message failed,the error is {} ",e);
+            throw new RabbitChannelException("Receive message failed,the error is: "+e);
+
+        }
+    }
+
+    public void receiveMessageWithRetry(final String queue){
+        this.receiveMessageWithRetry(queue,1);
+    }
+
 
     /**
      * consuming message.

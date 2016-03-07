@@ -110,7 +110,6 @@ public class SimpleMessageSender {
         Assert.notNull(payload);
 
         final Handler handler = this.handlerService.getProducerHandler(exchange,routingKey);
-        final Long currentTime = System.currentTimeMillis();
 
         channel.addConfirmListener(new ConfirmListener() {
             @Override
@@ -121,11 +120,6 @@ public class SimpleMessageSender {
                 if(handler != null) {
                     handler.handleMessage(payload);
                 }
-                long endTime = System.currentTimeMillis();
-                long used = (endTime-currentTime);
-                if(logger.isInfoEnabled()) {
-                    logger.info("#ACK exchange {} routingKey {} requestId {}# send message use {} ms", exchange, routingKey, payload.getRequestId(), used);
-                }
             }
 
             @Override
@@ -135,11 +129,6 @@ public class SimpleMessageSender {
 
                 if(handler != null) {
                     handler.handleMessage(payload);
-                }
-                long endTime = System.currentTimeMillis();
-                long used = (endTime-currentTime);
-                if(logger.isWarnEnabled()) {
-                    logger.warn("#NACK exchange{} routingKey{} requestId {}# send message use {} ms", exchange, routingKey, payload.getRequestId(), used);
                 }
             }
         });
@@ -152,15 +141,16 @@ public class SimpleMessageSender {
             public Boolean doWithRetry(RetryContext context) throws RabbitMessageSendException {
                 try {
                     logger.info("Send message {}",payload.getMessageId());
-
+                    final Long currentTime = System.currentTimeMillis();
                     channel.confirmSelect();
                     channel.basicPublish(exchange,routingKey,basicProperties,messageBody);
                     boolean successful = channel.waitForConfirms(10000L);
                     if(!successful){
                         throw new RabbitMessageSendException("Send message failed,will retry.");
                     }
-
-                    logger.info("Send message {} successful",payload.getMessageId());
+                    long endTime = System.currentTimeMillis();
+                    long used = (endTime-currentTime);
+                    logger.info("#ACK message {} exchange {} routingKey {} requestId {}# send message use {} ms", payload.getMessageId(),exchange, routingKey, payload.getRequestId(), used);
                 } catch (IOException | InterruptedException | TimeoutException e) {
                     if(logger.isErrorEnabled()){
                         logger.error("Send message occur error,the error is {}",e.getMessage());

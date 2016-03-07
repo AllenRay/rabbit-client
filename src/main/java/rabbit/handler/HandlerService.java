@@ -1,5 +1,6 @@
 package  rabbit.handler;
 
+import org.springframework.beans.factory.annotation.Value;
 import  rabbit.ConsumerHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
+import rabbit.config.DelayQueueConfig;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
@@ -26,9 +28,14 @@ public class HandlerService implements ApplicationContextAware,EmbeddedValueReso
 
     private Map<String,  rabbit.handler.Handler> handlerMap = new HashMap<>();
 
+    private Map<String,DelayQueueConfig> delayQueueConfigMap = new HashMap<>();
+
     private ApplicationContext context;
 
     private StringValueResolver stringValueResolver;
+
+    @Value("${delay_exchange_name}")
+    private String delayExchangeName;
 
     /**
      * init handler map, find all handler from context.
@@ -139,11 +146,48 @@ public class HandlerService implements ApplicationContextAware,EmbeddedValueReso
         return null;
     }
 
+    /**
+     * get delay queue config.
+     * @param queue
+     * @return
+     */
+    public DelayQueueConfig getQueueConfig(String queue){
+        if(this.delayQueueConfigMap.isEmpty()){
+            return null;
+        }
+        if(!this.delayQueueConfigMap.containsKey(queue)){
+            return null;
+        }
+
+        return this.delayQueueConfigMap.get(queue);
+    }
+
+    public Map<String, DelayQueueConfig> getDelayQueueConfigMap() {
+        return delayQueueConfigMap;
+    }
+
+    public void setDelayQueueConfigMap(Map<String, DelayQueueConfig> delayQueueConfigMap) {
+        this.delayQueueConfigMap = delayQueueConfigMap;
+    }
+
+    public String getDelayExchangeName() {
+        return delayExchangeName;
+    }
+
+    public void setDelayExchangeName(String delayExchangeName) {
+        this.delayExchangeName = delayExchangeName;
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = applicationContext;
     }
+
+    public ApplicationContext getContext() {
+        return context;
+    }
+
+
 
     @Override
     public void setEmbeddedValueResolver(StringValueResolver resolver) {

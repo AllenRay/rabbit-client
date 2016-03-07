@@ -9,6 +9,7 @@ import rabbit.RabbitTemplate;
 import rabbit.utils.MessageUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Created by Administrator on 2016/3/3.
@@ -16,38 +17,20 @@ import java.io.IOException;
 public class Test {
 
     public static void main(String[] args) throws Exception{
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("application.xml");
 
         RabbitTemplate rabbitTemplate = context.getBean("rabbitTemplate", RabbitTemplate.class);
 
-        //Message message = new Message();
-        //message.setMessageId(MessageUtils.generateShortMessageId());
+        /*Message message = new Message();
+        message.setMessageId(MessageUtils.generateShortMessageId());
 
-        //rabbitTemplate.sendMessage(message,"oneplus_exchange","oneplus.test.dead");
+        rabbitTemplate.sendMessage(message,"oneplus_exchange","cn.oneplus.message");*/
 
         //rabbitTemplate.receive("oneplus_test_deadletter");
 
-        ChannelFactory channelFactory = context.getBean(ChannelFactory.class);
+        rabbitTemplate.receiveMessageWithDelay("oneplus_queue");
 
-        Connection connection = channelFactory.getConnection();
 
-        final Channel channel = connection.createChannel();
-
-        channel.basicQos(0);
-        channel.basicConsume("federation-queue",false,new DefaultConsumer(channel){
-            /**
-             * No-op implementation of {@link Consumer#handleDelivery}.
-             */
-            public void handleDelivery(String consumerTag,
-                                       Envelope envelope,
-                                       AMQP.BasicProperties properties,
-                                       byte[] body)
-                    throws IOException
-            {
-                System.out.println(envelope.getDeliveryTag());
-                channel.basicAck(envelope.getDeliveryTag(),false);
-            }
-        });
 
 
     }

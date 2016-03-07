@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class MessagePropertiesBuilder {
 
-    public AMQP.BasicProperties buildPropertiesWithHeader(Map<String,Object> header){
+    public static AMQP.BasicProperties buildPropertiesWithHeader(Map<String,Object> header){
         AMQP.BasicProperties basicProperties = new AMQP.BasicProperties.Builder().headers(header).build();
         return basicProperties;
     }

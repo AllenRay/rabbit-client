@@ -5,5 +5,9 @@ package rabbit.utils;
  */
 public class Constants {
 
-    public static final String QUEUE = "queue";
+    public static final String QUEUE = "x-queue";
+
+    public static final String TRY_COUNT = "x-try-count";
+
+    public static final String DELAY = "x-delay";
 }
