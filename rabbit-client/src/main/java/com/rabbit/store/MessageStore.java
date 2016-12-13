@@ -1,5 +1,8 @@
 package com.rabbit.store;
 
+
+import java.util.List;
+
 /**
  * Created by allen lei on 2016/8/8.
  * version 1.0.0
@@ -13,12 +16,31 @@ public interface MessageStore {
      * payload 必须是序列化过后的内容，因为store只做最后的补偿，而不去做所谓的序列化
      *
      **/
-    void storeMessage(MessageStoreBean messageStoreBean);
+    Integer storeMessage(MessageStoreBean messageStoreBean);
 
     /**
      * 根据message key删除消息
-     * @param messageKey
+     *
+     * @param messageKey 其实是 message Id
      */
     void removeMessage(String messageKey);
+
+    /**
+     * 根据message id删除message
+     * @param messageId
+     */
+    void removeMessageById(int messageId);
+
+    /**
+     * batch remove messages.
+     * @param messageKeys
+     */
+    void batchRemoveMessages(List<String> messageKeys);
+
+    /**
+     * batch remove ids.
+     * @param messageIds
+     */
+    void batchRemoveMessageIds(List<Integer> messageIds);
 
 }

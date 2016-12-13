@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
+import java.util.List;
 
 /**
  * Created by allen lei on 2016/8/2.
@@ -33,18 +33,16 @@ public class ConfirmMessageProducer extends DefaultMessageProducer{
     }
 
 
-    protected boolean sendMessage(Channel channel, String exchange, String routingKey, AMQP.BasicProperties properties, byte[] payload) throws IOException {
+    protected boolean sendMessage(Channel channel, String exchange, String routingKey, AMQP.BasicProperties properties, List<Message> messages) throws IOException {
         channel.confirmSelect();
-        channel.basicPublish(exchange, routingKey, properties, payload);
+        for(Message message : messages) {
+            byte payload[] = getMessageConverter().convertToMessage(message);
+            logger.info("{} message {}",message.getRequestId(),message.getMessageId());
+            channel.basicPublish(exchange, routingKey, properties, payload);
+        }
         try {
-            boolean confirmaed = channel.waitForConfirms(5000l);
-            //clear confirm listener
-            if(confirmaed) {
-                channel.clearConfirmListeners();
-            }
-
-            return confirmaed;
-        } catch (InterruptedException | TimeoutException e) {
+           return channel.waitForConfirms();
+        } catch (InterruptedException e) {
             logger.error("Wait message confirm occur error:" + e);
             return false;
         }
@@ -53,25 +51,30 @@ public class ConfirmMessageProducer extends DefaultMessageProducer{
     /**
      * @param handlerService
      */
-    protected void preSendMessage(HandlerService handlerService, Channel channel, String exchange, String routingKey, final Message payload) {
+    protected void preSendMessage(HandlerService handlerService, Channel channel, String exchange, String routingKey, final List<Message> payloads) {
         final Handler handler = handlerService.getProducerHandler(exchange, routingKey);
 
         channel.addConfirmListener(new ConfirmListener() {
             @Override
             public void handleAck(long deliveryTag, boolean multiple) throws IOException {
-                payload.setDeliveryTag(deliveryTag);
-                payload.setAck(true);
-                if (handler != null) {
+                if(handler == null){
+                    return;
+                }
+                for(Message payload : payloads) {
+                    payload.setDeliveryTag(deliveryTag);
+                    payload.setAck(true);
                     handler.handleMessage(payload);
                 }
             }
 
             @Override
             public void handleNack(long deliveryTag, boolean multiple) throws IOException {
-                payload.setDeliveryTag(deliveryTag);
-                payload.setAck(false);
-
-                if (handler != null) {
+                if(handler == null){
+                    return;
+                }
+                for(Message payload : payloads) {
+                    payload.setDeliveryTag(deliveryTag);
+                    payload.setAck(false);
                     handler.handleMessage(payload);
                 }
             }

@@ -1,15 +1,16 @@
 package com.rabbit;
 
+import com.rabbit.common.LocalhostService;
 import com.rabbit.consumer.OneplusRetryMessageConsumer;
 import com.rabbit.consumer.OneplusSimpleMessageConsumer;
 import com.rabbit.exception.RabbitChannelException;
 import com.rabbit.handler.HandlerService;
 import com.rabbit.lyra.internal.util.Assert;
+import com.rabbit.lyra.internal.util.concurrent.NamedThreadFactory;
 import com.rabbit.messageConverter.MessageConverter;
 import com.rabbit.producer.*;
-import com.rabbit.store.MessageCompensater;
-import com.rabbit.store.MessageStoreAndRetriever;
-import com.rabbit.store.MessageStoreBean;
+import com.rabbit.producer.compensation.*;
+import com.rabbit.store.*;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.MessageProperties;
@@ -18,11 +19,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.ShardedJedisPool;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by allen lei on 2015/12/7.
@@ -35,7 +41,7 @@ import java.util.Random;
  */
 public class RabbitTemplate {
 
-    private Logger logger = LoggerFactory.getLogger(RabbitTemplate.class);
+    private Logger logger = LoggerFactory.getLogger("#rabbitLog#");
 
     private ChannelFactory channelFactory;
 
@@ -59,6 +65,8 @@ public class RabbitTemplate {
 
     private CompensateProducer compensateProducer;
 
+    private CompensateProducer redisCompensateProducer;
+
     private MessageStoreAndRetriever messageStoreAndRetriever;
 
     private boolean needCompensation = false;
@@ -66,6 +74,22 @@ public class RabbitTemplate {
     private String appName;
 
     private String zkConnect;
+
+    private int coreSize = 0;
+
+    private int maxSize = 0;
+
+    private final static int DEFAULT_CORE_SIZE = 5;
+
+    private final static int DEFAULT_MAX_SIZE = 10;
+
+    private ThreadPoolExecutor executor;
+
+    private JedisPool jedisPool;
+
+    private ShardedJedisPool shardedJedisPool;
+
+    private LocalhostService localhostService = new LocalhostService();
 
     /**
      * 发送消息的low level API，
@@ -294,6 +318,7 @@ public class RabbitTemplate {
         try {
             messageSenderCallback.execute(channel);
         } finally {
+            channel.clearConfirmListeners();
             channelFactory.returnProducerChannel(channel);
         }
 
@@ -302,7 +327,6 @@ public class RabbitTemplate {
 
     /**
      * 使用一个channel 发送多个message。
-     * 虽然是批量发送，但是每次发送完一个消息后，handler 都会处理下，但是无法将当前发送的信息传递给handler，
      * handler得到的只是deliveryTag以及ACK是否确认
      *
      * @param messages
@@ -406,45 +430,53 @@ public class RabbitTemplate {
         sendConfirmMultiMessage(messages, getExchange(), getRoutingKey(), null);
     }
 
-    public void sendCompensationMessage(Message message, String exchange) {
-        this.sendCompensationMessage(message, exchange, "", null, null);
-    }
-
-    public void sendCompensationMessage(Message message, String exchange, String routingKey) {
-        this.sendCompensationMessage(message, exchange, routingKey, null, null);
-    }
-
-    public void sendCompensationMessage(Message message, String exchange, String routingKey, AMQP.BasicProperties basicProperties) {
-        this.sendCompensationMessage(message, exchange, routingKey, null, basicProperties);
-    }
-
     /**
      * 发送需要补偿的消息
-     *
+     * 采用redis实现补偿功能
      * @param message
      * @param exchange
      * @param routingKey
-     * @param messageKey
      * @param basicProperties
      */
-    public void sendCompensationMessage(Message message, String exchange, String routingKey, String messageKey, AMQP.BasicProperties basicProperties) {
+    public void sendCompensationMessage(Message message, String exchange, String routingKey, AMQP.BasicProperties basicProperties) {
         if (!isNeedCompensation()) {
             logger.error("The needCompensation must be set to true.");
             return;
         }
-        Channel channel = channelFactory.getProducerChannel();
-        try {
-            compensateProducer.sendCompensationMessage(message, exchange, routingKey, messageKey, basicProperties, channel);
-        } finally {
-            //如果不清除，会把之前ACK的所有message都带上.
-            channel.clearConfirmListeners();
-            channelFactory.returnProducerChannel(channel);
+        CompensationMessage compensationMessage = new CompensationMessage();
+        compensationMessage.setBasicProperties(basicProperties);
+        compensationMessage.setExchangeKey(exchange);
+        compensationMessage.setRoutingKey(routingKey);
+        compensationMessage.setMessage(message);
+        redisCompensateProducer.sendCompensationMessage(compensationMessage);
+    }
+
+    /**
+     * 发送补偿消息，采用数据库，实现补偿功能
+     * @param message
+     * @param exchange
+     * @param routingKey
+     * @param messageId
+     * @param basicProperties
+     */
+    public void sendCompensationMessage(Message message, String exchange, String routingKey, int messageId, AMQP.BasicProperties basicProperties){
+        if (!isNeedCompensation()) {
+            logger.error("The needCompensation must be set to true.");
+            return;
         }
+
+        CompensationMessage compensationMessage = new CompensationMessage();
+        compensationMessage.setBasicProperties(basicProperties);
+        compensationMessage.setExchangeKey(exchange);
+        compensationMessage.setRoutingKey(routingKey);
+        compensationMessage.setMessage(message);
+        compensationMessage.setMessageId(messageId);
+        compensateProducer.sendCompensationMessage(compensationMessage);
     }
 
     /**
      * store message.
-     * use messageID to instead messageKey if messageKey is empty.
+     * 不要使用此方法
      *
      * @param message
      * @param exchange
@@ -453,6 +485,7 @@ public class RabbitTemplate {
      * @param basicProperties
      * @return
      */
+    @Deprecated
     public void storeMessage(Message message, String exchange, String routingKey, String messageKey, AMQP.BasicProperties basicProperties) {
         MessageStoreBean messageStoreBean = new MessageStoreBean();
         messageStoreBean.setExchange(exchange);
@@ -461,6 +494,25 @@ public class RabbitTemplate {
         messageStoreBean.setBasicProperties(basicProperties);
         messageStoreBean.setPayload(this.messageConverter.convertToMessage(message));
         this.messageStoreAndRetriever.storeMessage(messageStoreBean);
+    }
+
+    /**
+     * store message.
+     * @param message
+     * @param exchange
+     * @param routingKey
+     * @param basicProperties
+     * @return
+     */
+    public Integer storeMessage(Message message, String exchange, String routingKey, AMQP.BasicProperties basicProperties){
+        MessageStoreBean messageStoreBean = new MessageStoreBean();
+        messageStoreBean.setExchange(exchange);
+        messageStoreBean.setRoutingKey(routingKey);
+        messageStoreBean.setBasicProperties(basicProperties);
+        messageStoreBean.setMessageKey(UUID.randomUUID().toString());
+        messageStoreBean.setPayload(this.messageConverter.convertToMessage(message));
+        return this.messageStoreAndRetriever.storeMessage(messageStoreBean);
+
     }
 
     /*
@@ -499,7 +551,7 @@ public class RabbitTemplate {
      */
     private void consuming(final String queue, boolean autoACK, int fetchCount, final Channel channel) throws IOException {
         channel.basicQos(fetchCount);
-        channel.basicConsume(queue, false, getConsumerTag(),new OneplusSimpleMessageConsumer(channel, handlerService, getMessageConverter(), queue));
+        channel.basicConsume(queue, false, getConsumerTag(),new OneplusSimpleMessageConsumer(channel, handlerService, getMessageConverter(), queue,executor));
     }
 
     /**
@@ -507,14 +559,7 @@ public class RabbitTemplate {
      * @return
      */
     private String getConsumerTag(){
-        String consumerTag;
-        Random random = new Random(1000l);
-        if(!StringUtils.isEmpty(getAppName())){
-            consumerTag = "OnePlus:"+getAppName()+":"+Math.abs(random.nextLong());
-        }else {
-            consumerTag = "OnePlus:"+Math.abs(random.nextLong());
-        }
-        return consumerTag;
+        return "OnePlus:"+getAppName()+":"+localhostService.getIp();
     }
 
     /**
@@ -531,7 +576,7 @@ public class RabbitTemplate {
         try {
             //consuming(queue, fetchCount, channel);
             channel.basicQos(fetchCount);
-            channel.basicConsume(queue, autoACK, getConsumerTag(),new OneplusRetryMessageConsumer(channel, this.handlerService, messageConverter, queue));
+            channel.basicConsume(queue, autoACK, getConsumerTag(),new OneplusRetryMessageConsumer(channel, this.handlerService, messageConverter, queue,executor));
         } catch (Exception e) {
             //will close channel if occur exception,like NullPointException and others.
             //so we need recovery channel after exception occured.
@@ -581,6 +626,7 @@ public class RabbitTemplate {
         Assert.notNull(channelFactory);
         Assert.notNull(getMessageConverter());
         Assert.notNull(handlerService);
+        Assert.notNull(appName,"The app name cant be null");
 
         //init default mq messageProducer.
         if (messageProducer == null) {
@@ -593,24 +639,47 @@ public class RabbitTemplate {
         }
         //is need message compenstate.
         if (isNeedCompensation()) {
-            Assert.notNull(messageStoreAndRetriever);
-            Assert.notNull(zkConnect);
+            Assert.notNull(getJedisPool());
+            Assert.notNull(getShardedJedisPool());
 
-            compensateProducer = new DefaultCompensateProducer(handlerService, messageStoreAndRetriever, messageConverter);
+            CompensateManager compensateManager = new CompensateManager(getChannelFactory(),getJedisPool(),getMessageConverter(),appName);
 
-            final MessageCompensater messageCompensater = new MessageCompensater(messageStoreAndRetriever, channelFactory,getZkConnect());
+            //use mysql to compensate.
+            compensateProducer = new DefaultCompensateProducer(compensateManager);
 
-            //start message compenstate.
-            messageCompensater.start();
+            //use redis to compensate.
+            redisCompensateProducer = new RedisCompensateProducer(compensateManager,appName,getJedisPool());
 
-            //add shutdownhook to release resource.
-            Runtime.getRuntime().addShutdownHook(new Thread(){
-                public void run(){
-                    messageCompensater.stop();
-                }
-            });
+            if(messageStoreAndRetriever != null && !StringUtils.isEmpty(zkConnect)) {
+                //jdbc 补偿实现
+                final MessageCompensater messageCompensater = new MessageCompensater(messageStoreAndRetriever, channelFactory, getZkConnect(), getAppName());
+                //start message compenstate.
+                messageCompensater.start();
+            }
+
+            //Redis
+            final RedisMessageCompensater redisMessageCompensater = new RedisMessageCompensater(appName,getJedisPool(),channelFactory,getMessageConverter());
+            redisMessageCompensater.start();
+
         }
 
+        if(getCoreSize() <= 0){
+            coreSize = DEFAULT_CORE_SIZE;
+        }
+
+        if(getMaxSize() <= 0){
+            maxSize = DEFAULT_MAX_SIZE;
+        }
+
+        executor = new ThreadPoolExecutor(coreSize, maxSize, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(500),
+                    new NamedThreadFactory("rabbit-consumer-%s"));
+
+        //add shutdownhook to release resource.
+        Runtime.getRuntime().addShutdownHook(new Thread(){
+            public void run(){
+                executor.shutdown();
+            }
+        });
 
     }
 
@@ -693,6 +762,38 @@ public class RabbitTemplate {
 
     public void setZkConnect(String zkConnect) {
         this.zkConnect = zkConnect;
+    }
+
+    public int getCoreSize() {
+        return coreSize;
+    }
+
+    public void setCoreSize(int coreSize) {
+        this.coreSize = coreSize;
+    }
+
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
+    }
+
+    public JedisPool getJedisPool() {
+        return jedisPool;
+    }
+
+    public void setJedisPool(JedisPool jedisPool) {
+        this.jedisPool = jedisPool;
+    }
+
+    public ShardedJedisPool getShardedJedisPool() {
+        return shardedJedisPool;
+    }
+
+    public void setShardedJedisPool(ShardedJedisPool shardedJedisPool) {
+        this.shardedJedisPool = shardedJedisPool;
     }
 }
 

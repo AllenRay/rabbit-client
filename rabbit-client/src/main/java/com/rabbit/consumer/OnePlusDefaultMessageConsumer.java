@@ -11,8 +11,10 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import java.io.IOException;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by allen lei on 2016/5/27.
@@ -21,7 +23,7 @@ import java.io.IOException;
  */
 public abstract class OnePlusDefaultMessageConsumer extends DefaultConsumer {
 
-    private final Logger logger = LoggerFactory.getLogger("#Default_Message_Consumer#");
+    private final Logger logger = LoggerFactory.getLogger("#Message_Consumer#");
 
     private MessageConverter messageConverter;
 
@@ -29,69 +31,93 @@ public abstract class OnePlusDefaultMessageConsumer extends DefaultConsumer {
 
     private String queue;
 
+    private ThreadPoolExecutor executor;
+
+
     /**
      * Constructs a new instance and records its association to the passed-in channel.
      *
      * @param channel the channel to which this consumer is attached
      */
-    public OnePlusDefaultMessageConsumer(Channel channel, HandlerService handlerService, MessageConverter messageConverter, String queue) {
+    public OnePlusDefaultMessageConsumer(Channel channel, HandlerService handlerService, MessageConverter messageConverter,
+                                         String queue,ThreadPoolExecutor executor) {
         super(channel);
 
         Assert.notNull(handlerService);
         Assert.notNull(messageConverter);
         Assert.notNull(queue);
+
         this.handlerService = handlerService;
         this.messageConverter = messageConverter;
         this.queue = queue;
+
+        this.executor = executor;
+
     }
 
-    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-        Object message;
-        try {
-            message = this.messageConverter.convertToObject(body);
-        } catch (Throwable e) {
-            logger.error("Convert message occur error,the error is:" + e);
-            getChannel().basicNack(envelope.getDeliveryTag(), false, false);
-            return;
-        }
 
-        if (message == null) {
-            getChannel().basicNack(envelope.getDeliveryTag(), false, false);
-            return;
-        }
-        if (message instanceof Message) {
-            final Message messageBody = (Message) message;
-            final Handler handler = handlerService.getConsumerHandler(queue);
+    public void handleDelivery(final String consumerTag, final Envelope envelope, final AMQP.BasicProperties properties, final byte[] body) throws IOException {
 
-            if (handler == null) {
-                logger.error("No handler for this message {},so stop handle it and nack.", messageBody.getMessageId());
-                getChannel().basicNack(envelope.getDeliveryTag(), false, false);
-                return;
-            }
-            boolean successful;
-            try {
-                successful = processMessage(messageBody, handler);
-            } catch (Throwable e) {
-                //catch all exception and nack message, if throw any runtime exception,the channel will be closed.
-                logger.error("Handler message occur error", e);
-                if (getChannel() != null) {
-                    getChannel().basicNack(envelope.getDeliveryTag(), false, false);
+        //async process message.
+        executor.submit(new Runnable() {
+            public void run() {
+                try {
+                    Object message;
+                    try {
+                        message = messageConverter.convertToObject(body);
+                    } catch (Throwable e) {
+                        logger.error("Convert message occur error,the error is:" + e);
+                        getChannel().basicNack(envelope.getDeliveryTag(), false, false);
+                        return;
+                    }
+
+                    if (message == null) {
+                        getChannel().basicNack(envelope.getDeliveryTag(), false, false);
+                        return;
+                    }
+                    if (message instanceof Message) {
+                        final Message messageBody = (Message) message;
+                        final Handler handler = handlerService.getConsumerHandler(queue);
+
+                        if (handler == null) {
+                            logger.error("No handler for this message {},so stop handle it and nack.", messageBody.getMessageId());
+                            getChannel().basicNack(envelope.getDeliveryTag(), false, false);
+                            return;
+                        }
+                        MDC.put("oneplusLogId",messageBody.getRequestId());
+                        logger.info("{} message {} process",messageBody.getRequestId(),((Message) message).getMessageId());
+                        boolean successful;
+                        try {
+                            successful = processMessage(messageBody, handler);
+                        } catch (Throwable e) {
+                            //catch all exception and nack message, if throw any runtime exception,the channel will be closed.
+                            logger.error("Handler message occur error", e);
+                            if (getChannel() != null) {
+                                getChannel().basicNack(envelope.getDeliveryTag(), false, false);
+                            }
+                            return;
+                        }finally {
+                            MDC.remove("oneplusLogId");
+                        }
+                        logger.info("Message {} handler result is {}", messageBody.getMessageId(), successful);
+
+                        if (successful) {
+                            getChannel().basicAck(envelope.getDeliveryTag(), false);
+                        } else {
+                            getChannel().basicNack(envelope.getDeliveryTag(), false, false);
+                        }
+
+                    } else {
+                        getChannel().basicNack(envelope.getDeliveryTag(), false, false);
+                        logger.error("invalid message,the valid message type should be {} but current message type is {}", Message.class.getName(),
+                                message != null ? message.getClass().getName() : "null");
+                    }
+                } catch (Throwable e) {
+                    logger.error("Process error occur error." + e);
                 }
-                return;
-            }
-            logger.info("Message {} handler result is {}", messageBody.getMessageId(), successful);
-
-            if (successful) {
-                getChannel().basicAck(envelope.getDeliveryTag(), false);
-            } else {
-                getChannel().basicNack(envelope.getDeliveryTag(), false, false);
             }
 
-        } else {
-            getChannel().basicNack(envelope.getDeliveryTag(), false, false);
-            logger.error("invalid message,the valid message type should be {} but current message type is {}", Message.class.getName(),
-                    message != null ? message.getClass().getName() : "null");
-        }
+        });
     }
 
     public abstract boolean processMessage(Message message, Handler handler);

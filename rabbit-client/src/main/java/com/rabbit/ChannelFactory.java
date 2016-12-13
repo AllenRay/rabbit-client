@@ -19,10 +19,8 @@ import org.springframework.util.StringUtils;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeoutException;
+import java.util.Iterator;
+import java.util.concurrent.*;
 
 /**
  * Created by allen lei on 2015/12/4.
@@ -50,15 +48,17 @@ public class ChannelFactory {
 
     private ConnectionFactory factory;
 
-    private Connection producerConnection;
-
     private Connection consumerConnection;
 
     private ExecutorService executorService;
 
     private int cacheSize = 1;
 
+    private int connectionSize = 1;
+
     private BlockingQueue<Channel> producerChannels;
+
+    private BlockingQueue<Connection> producerConections;
 
 
     /**
@@ -75,7 +75,7 @@ public class ChannelFactory {
                             .withMaxAttempts(10)
                             .withInterval(Duration.seconds(5))
                             .withMaxDuration(Duration.minutes(5))).withConsumerRecovery(true).withQueueRecovery(true).withExchangeRecovery(true);
-
+            ConnectionOptions connectionOptions = null;
             if (!StringUtils.isEmpty(getAddress())) {
                 String[] adds = getAddress().split(",");
                 if (adds == null || adds.length == 0) {
@@ -91,33 +91,31 @@ public class ChannelFactory {
                         addresses[i] = new Address(adds[0]);
                     }
                 }
-                ConnectionOptions connectionOptions = new ConnectionOptions().withAddresses(addresses).withUsername(getUserName()).withPassword(getPassword()).withVirtualHost(getVirtualHost());
+                 connectionOptions = new ConnectionOptions().withAddresses(addresses).withUsername(getUserName()).withPassword(getPassword()).withVirtualHost(getVirtualHost());
 
-                if (getExecutorService() != null) {
-                    connectionOptions.withConsumerExecutor(getExecutorService());
-                }
-                producerConnection = Connections.create(connectionOptions, config);
-
-                consumerConnection = Connections.create(connectionOptions, config);
             } else {
-                ConnectionOptions connectionOptions = new ConnectionOptions().withHost(getHost()).withPort(getPort()).withUsername(getUserName()).withPassword(getPassword()).withVirtualHost(getVirtualHost());
-
-                if (getExecutorService() != null) {
-                    connectionOptions.withConsumerExecutor(getExecutorService());
-                }
-
-                producerConnection = Connections.create(connectionOptions, config);
-
-                consumerConnection = Connections.create(connectionOptions, config);
-
+                connectionOptions = new ConnectionOptions().withHost(getHost()).withPort(getPort()).withUsername(getUserName()).withPassword(getPassword()).withVirtualHost(getVirtualHost());
+            }
+            if (getExecutorService() != null) {
+                connectionOptions.withConsumerExecutor(getExecutorService());
+            }
+            //init producer connection
+            producerConections = new LinkedBlockingQueue<>(getConnectionSize());
+            for(int i = 0; i < getConnectionSize(); i++) {
+                producerConections.offer(Connections.create(connectionOptions, config));
             }
 
-            if (producerConnection == null || consumerConnection == null) {
+            consumerConnection = Connections.create(connectionOptions, config);
+
+            if (producerConections == null || producerConections.isEmpty()|| consumerConnection == null) {
                 throw new RabbitConnectionException("Rabbit producerConnection has not instance,so abort it...");
             }
+
             //init producer channel
-            producerChannels = new ArrayBlockingQueue<Channel>(getCacheSize());
-            for(int i = 0; i < getCacheSize(); i++){
+            //数量是缓存channel size 和 connection size
+            int channelSize = getCacheSize()*getConnectionSize();
+            producerChannels = new LinkedBlockingQueue<>(channelSize);
+            for(int i = 0; i < channelSize; i++){
                 producerChannels.offer(createProducerChannel());
             }
 
@@ -135,12 +133,17 @@ public class ChannelFactory {
      * @return
      */
     Channel createProducerChannel() {
-        if (producerConnection == null || !producerConnection.isOpen()) {
-            logger.error("Connection is not opened.");
+        if (producerConections == null || producerConections.isEmpty()) {
+            logger.error("Has no connection pools");
             throw new RabbitConnectionException("No available producerConnection.");
         }
         try {
-            return producerConnection.createChannel();
+            //从连接池head拿到连接然后创建channel
+            //put connection to tail afte create channel
+            Connection connection = producerConections.poll();
+            Channel channel = connection.createChannel();
+            producerConections.offer(connection);
+            return channel;
         } catch (IOException e) {
             logger.error("Create channel occur error." + e);
             throw new RabbitChannelException("Create channel occur error." + e);
@@ -153,10 +156,18 @@ public class ChannelFactory {
      * @return
      */
     public Channel getProducerChannel(){
+        long start = System.currentTimeMillis();
         try {
-            return producerChannels.take();
+            Channel channel = producerChannels.poll(5,TimeUnit.MILLISECONDS);
+            if(channel == null){
+                return createProducerChannel();
+            }
+            return channel;
         } catch (InterruptedException e) {
             throw new RabbitChannelException("Cant get channel:"+e);
+        }finally {
+            long end = System.currentTimeMillis();
+            logger.debug("Get channel spent {}ms",end-start);
         }
     }
 
@@ -166,7 +177,15 @@ public class ChannelFactory {
      */
     public void returnProducerChannel(Channel channel){
         if(channel != null && channel.isOpen()){
-            producerChannels.offer(channel);
+            boolean offerd = producerChannels.offer(channel);
+            if(!offerd){
+                try {
+                    channel.close();
+                    logger.debug("close channel when pool is full");
+                } catch (IOException | TimeoutException e) {
+                    logger.error("Close channel occur error:"+e);
+                }
+            }
         }
     }
 
@@ -214,8 +233,11 @@ public class ChannelFactory {
     @PreDestroy
     public void closeConnection() {
         try {
-            if (producerConnection != null) {
-                producerConnection.close();
+            if (producerConections != null && !producerConections.isEmpty()) {
+                for (Iterator<Connection> it = producerConections.iterator(); it.hasNext();){
+                    Connection connection = it.next();
+                    connection.close();
+                }
             }
 
             if (consumerConnection != null) {
@@ -300,13 +322,11 @@ public class ChannelFactory {
         this.cacheSize = cacheSize;
     }
 
-    public Connection getProducerConnection() {
-        return producerConnection;
+    public int getConnectionSize() {
+        return connectionSize;
     }
 
-    public void setProducerConnection(Connection producerConnection) {
-        this.producerConnection = producerConnection;
+    public void setConnectionSize(int connectionSize) {
+        this.connectionSize = connectionSize;
     }
-
-
 }

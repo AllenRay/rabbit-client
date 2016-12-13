@@ -4,6 +4,7 @@ import com.rabbit.Message;
 import com.rabbit.exception.RabbitMessageSendException;
 import com.rabbit.handler.HandlerService;
 import com.rabbit.lyra.internal.util.Assert;
+import com.rabbit.lyra.internal.util.concurrent.NamedThreadFactory;
 import com.rabbit.messageConverter.MessageConverter;
 import com.rabbit.store.MessageStore;
 import com.rabbitmq.client.AMQP;
@@ -17,11 +18,12 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -46,7 +48,7 @@ public class DefaultMessageProducer implements Producer {
 
     //use min 5  and max 20 threads pool to send asynchronous message.
     //but the maxiumn message count is 4000,if not necessary please dont send async message.
-    private final ExecutorService executorService = new ThreadPoolExecutor(5,20,60, TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(200),new ThreadPoolExecutor.CallerRunsPolicy());
+    private final ExecutorService executorService = new ThreadPoolExecutor(5,20,60, TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>(200),new NamedThreadFactory("Rabbit-producer-%s"));
 
     /**
      * build retry template
@@ -82,7 +84,7 @@ public class DefaultMessageProducer implements Producer {
      */
     @Override
     public void sendMessage(String exchange, String routingKey, Message payload, AMQP.BasicProperties basicProperties, Channel channel){
-        sendMessageWithRetry(exchange,routingKey,payload,basicProperties,channel);
+        sendMessageWithRetry(exchange,routingKey, Arrays.asList(payload),basicProperties,channel);
     }
 
     /**
@@ -131,9 +133,7 @@ public class DefaultMessageProducer implements Producer {
     @Override
     public void batchSendMessage(String exchange,String routingKey,List<Message> payloads,AMQP.BasicProperties basicProperties,Channel channel){
         Assert.notNull(payloads);
-        for (Message payload : payloads){
-            sendMessageWithRetry(exchange,routingKey,payload,basicProperties,channel);
-        }
+        sendMessageWithRetry(exchange,routingKey,payloads,basicProperties,channel);
     }
 
 
@@ -148,32 +148,28 @@ public class DefaultMessageProducer implements Producer {
      * @param payload
      * @param basicProperties
      */
-    private void sendMessageWithRetry(final String exchange, final String routingKey, final Message payload, final AMQP.BasicProperties basicProperties,final Channel channel){
+    private void sendMessageWithRetry(final String exchange, final String routingKey, final List<Message> payload, final AMQP.BasicProperties basicProperties,final Channel channel){
         Assert.notNull(exchange);
         Assert.notNull(payload);
 
         preSendMessage(this.handlerService,channel,exchange,routingKey,payload);
-
-        final byte [] messageBody = this.messageConverter.convertToMessage(payload);
 
         retryTemplate.execute(new RetryCallback<Boolean, RabbitMessageSendException>() {
 
             @Override
             public Boolean doWithRetry(RetryContext context) throws RabbitMessageSendException {
                 try {
-                    logger.info("Send message {}",payload.getMessageId());
-
                     Long currentTime = System.currentTimeMillis();
-                    boolean successful = sendMessage(channel,exchange,routingKey,basicProperties,messageBody);
+                    boolean successful = sendMessage(channel,exchange,routingKey,basicProperties,payload);
                     if(!successful){
                         long endTime = System.currentTimeMillis();
                         long used = (endTime-currentTime);
-                        logger.warn("#NACK exchange{} routingKey{} requestId {}# send message use {} ms", exchange, routingKey, payload.getRequestId(), used);
+                        logger.warn("#NACK exchange{} routingKey{}", exchange, routingKey);
                         throw new RabbitMessageSendException("Send message failed,will retry.");
                     }
                     long endTime = System.currentTimeMillis();
                     long used = (endTime-currentTime);
-                    logger.info("#ACK exchange {} routingKey {} requestId {}# send message use {} ms", exchange, routingKey, payload.getRequestId(), used);
+                    logger.info("#ACK send message use {} ms", used);
                 } catch (Exception e) {
                     throw new RabbitMessageSendException("Send message occur error,will retry.",e);
                 }
@@ -188,12 +184,16 @@ public class DefaultMessageProducer implements Producer {
      * @param exchange
      * @param routingKey
      * @param properties
-     * @param payload
      * @return
      * @throws IOException
      */
-    protected boolean sendMessage(Channel channel, String exchange, String routingKey, AMQP.BasicProperties properties,byte[] payload) throws IOException {
-        channel.basicPublish(exchange,routingKey,properties,payload);
+    protected boolean sendMessage(Channel channel, String exchange, String routingKey, AMQP.BasicProperties properties,List<Message> messages) throws IOException {
+        for(Message message : messages){
+            logger.info("{} message {}",message.getRequestId(),message.getMessageId());
+            byte [] payload = getMessageConverter().convertToMessage(message);
+            channel.basicPublish(exchange,routingKey,properties,payload);
+        }
+
         return true;
     }
 
@@ -201,7 +201,15 @@ public class DefaultMessageProducer implements Producer {
      *
      * @param handlerService
      */
-    protected void preSendMessage(HandlerService handlerService,Channel channel,String exchange,String routingKey,Message message){
+    protected void preSendMessage(HandlerService handlerService,Channel channel,String exchange,String routingKey,List<Message> message){
 
+    }
+
+    public MessageConverter getMessageConverter() {
+        return messageConverter;
+    }
+
+    public void setMessageConverter(MessageConverter messageConverter) {
+        this.messageConverter = messageConverter;
     }
 }

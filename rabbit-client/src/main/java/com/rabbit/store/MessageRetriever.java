@@ -15,4 +15,17 @@ public interface MessageRetriever {
      * @return
      */
     List<MessageStoreBean> retrieveUnSendMessages();
+
+    /**
+     * retrieve all compensation message count
+     * @return
+     */
+    int retrieveMessageTotalCount();
+
+    /**
+     * get compensation time.
+     *
+     * @return
+     */
+    long getCompensationTime();
 }

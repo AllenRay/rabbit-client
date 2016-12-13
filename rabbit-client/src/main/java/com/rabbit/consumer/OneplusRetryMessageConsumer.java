@@ -17,6 +17,7 @@ import org.springframework.retry.support.RetryTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by allen lei on 2016/2/24.
@@ -34,8 +35,9 @@ public class OneplusRetryMessageConsumer extends OnePlusDefaultMessageConsumer {
      *
      * @param channel the channel to which this consumer is attached
      */
-    public OneplusRetryMessageConsumer(Channel channel, HandlerService handlerService, MessageConverter messageConverter, String queue) {
-        super(channel, handlerService, messageConverter, queue);
+    public OneplusRetryMessageConsumer(Channel channel, HandlerService handlerService, MessageConverter messageConverter,
+                                       String queue, ThreadPoolExecutor executor) {
+        super(channel, handlerService, messageConverter, queue,executor);
 
         initRetryPolicy();
     }

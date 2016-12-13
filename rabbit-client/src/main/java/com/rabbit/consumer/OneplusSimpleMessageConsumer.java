@@ -6,6 +6,8 @@ import com.rabbit.handler.HandlerService;
 import com.rabbit.messageConverter.MessageConverter;
 import com.rabbitmq.client.Channel;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * Created by allen lei on 2016/2/24.
  * simple consumer,
@@ -19,8 +21,9 @@ public class OneplusSimpleMessageConsumer extends OnePlusDefaultMessageConsumer 
      *
      * @param channel the channel to which this consumer is attached
      */
-    public OneplusSimpleMessageConsumer(Channel channel, HandlerService handlerService, MessageConverter messageConverter, String queue) {
-        super(channel, handlerService, messageConverter, queue);
+    public OneplusSimpleMessageConsumer(Channel channel, HandlerService handlerService, MessageConverter messageConverter, String queue,
+                                        ThreadPoolExecutor executor) {
+        super(channel, handlerService, messageConverter, queue,executor);
     }
 
     @Override

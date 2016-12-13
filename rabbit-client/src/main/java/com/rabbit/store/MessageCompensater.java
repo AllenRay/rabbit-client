@@ -1,6 +1,8 @@
 package com.rabbit.store;
 
 import com.rabbit.ChannelFactory;
+import com.rabbit.lyra.internal.util.Assert;
+import com.rabbit.lyra.internal.util.concurrent.NamedThreadFactory;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConfirmListener;
@@ -12,7 +14,6 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,6 +34,8 @@ public class MessageCompensater {
 
     private final static String LOCK_PATH = "/ROOT/MESSAGE/LOCK";
 
+    private String appName;
+
     private MessageStoreAndRetriever messageStoreAndRetriever;
 
     private ChannelFactory channelFactory;
@@ -43,18 +46,28 @@ public class MessageCompensater {
 
     private InterProcessMutex lock;
 
+    private String lockPath;
+
     public MessageCompensater(MessageStoreAndRetriever messageStoreAndRetriever,
-                              ChannelFactory channelFactory, String zkConnect) {
+                              ChannelFactory channelFactory, String zkConnect,
+                              String appName) {
         this.messageStoreAndRetriever = messageStoreAndRetriever;
         this.channelFactory = channelFactory;
         this.zkConnect = zkConnect;
+        this.appName = appName;
+
+        lockPath = LOCK_PATH + "/" + appName;
+
+        Assert.notNull(lockPath);
+
+
     }
 
-    //初始化一个线程，每一分钟跑一次
-    private ScheduledThreadPoolExecutor executorService = new ScheduledThreadPoolExecutor(1);
+    //初始化一个线程，每10秒钟尝试补偿一次
+    private ScheduledThreadPoolExecutor executorService = new ScheduledThreadPoolExecutor(1,new NamedThreadFactory("JDBC-compensation-%s"));
 
     public void start() {
-        logger.info("Starting retrieve unsend messages..");
+        logger.info("Starting retrieve unSend messages..");
 
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
         client = CuratorFrameworkFactory.newClient(zkConnect, retryPolicy);
@@ -65,10 +78,17 @@ public class MessageCompensater {
         client.start();
 
         //instance distrbuted lock.
-        lock = new InterProcessMutex(client,LOCK_PATH);
+        lock = new InterProcessMutex(client,lockPath);
 
         //submit task.
-        executorService.scheduleWithFixedDelay(new RetrieveMessagesToSend(),100,60,TimeUnit.SECONDS);
+        executorService.scheduleWithFixedDelay(new RetrieveMessagesToSend(),60,10,TimeUnit.SECONDS);
+
+        //add shutdownhook to release resource.
+        Runtime.getRuntime().addShutdownHook(new Thread(){
+            public void run(){
+                MessageCompensater.this.stop();
+            }
+        });
 
 
     }
@@ -112,50 +132,53 @@ public class MessageCompensater {
     }
 
     private void retrieveMessageAndSend() {
-        List<MessageStoreBean> messageStoreBeans = messageStoreAndRetriever.retrieveUnSendMessages();
-        if (!CollectionUtils.isEmpty(messageStoreBeans)) {
-            logger.info("Find UNSend Messages,size is {}", messageStoreBeans.size());
-            Channel channel = channelFactory.getProducerChannel();
-            try {
-                for (MessageStoreBean storeBean : messageStoreBeans) {
-                    String exchange = storeBean.getExchange();
-                    String routingKey = storeBean.getRoutingKey();
-                    AMQP.BasicProperties basicProperties = storeBean.getBasicProperties();
-                    byte[] payload = storeBean.getPayload();
-                    final String messageKey = storeBean.getMessageKey();
+        int total = messageStoreAndRetriever.retrieveMessageTotalCount();
+        int loopCount = total % 1000 == 0 ? total / 1000 : total / 1000 + 1;
+        logger.info("Compensation count is {}",loopCount);
+        for(int i = 0; i < loopCount ; i++) {
+            List<MessageStoreBean> messageStoreBeans = messageStoreAndRetriever.retrieveUnSendMessages();
+            if (!CollectionUtils.isEmpty(messageStoreBeans)) {
+                Channel channel = channelFactory.getProducerChannel();
+                try {
+                    for (MessageStoreBean storeBean : messageStoreBeans) {
+                        String exchange = storeBean.getExchange();
+                        String routingKey = storeBean.getRoutingKey();
+                        AMQP.BasicProperties basicProperties = storeBean.getBasicProperties();
+                        byte[] payload = storeBean.getPayload();
+                        final int messageId = storeBean.getMessageId();
 
-                    channel.addConfirmListener(new ConfirmListener() {
-                        @Override
-                        public void handleAck(long deliveryTag, boolean multiple) throws IOException {
-                            if (!StringUtils.isEmpty(messageKey))
-                                logger.info("Message compensater have re pulished message {} and remove it.", messageKey);
-                            messageStoreAndRetriever.removeMessage(messageKey);
-                        }
+                        channel.addConfirmListener(new ConfirmListener() {
+                            @Override
+                            public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+                                messageStoreAndRetriever.removeMessageById(messageId);
+                            }
 
-                        @Override
-                        public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+                            @Override
+                            public void handleNack(long deliveryTag, boolean multiple) throws IOException {
 
-                        }
-                    });
+                            }
+                        });
 
-                    channel.confirmSelect();
-                    channel.basicPublish(exchange, StringUtils.isEmpty(routingKey) ? "" : routingKey, basicProperties, payload);
-                    channel.waitForConfirms(3000l);
+                        channel.confirmSelect();
+                        channel.basicPublish(exchange, routingKey, basicProperties, payload);
+                        channel.waitForConfirms(3000l);
 
-                    //clear channel listener.
-                    //to avoid have been confirmed message confirm again.
-                    channel.clearConfirmListeners();
+                        //clear channel listener.
+                        //to avoid have been confirmed message confirm again.
+                        channel.clearConfirmListeners();
 
 
+                    }
+
+                } catch (Throwable e) {
+                    logger.error("Compensate message occur error." + e);
+                } finally {
+                    channelFactory.returnProducerChannel(channel);
                 }
-
-            } catch (Throwable e) {
-                logger.error("Compensate messsge occur error." + e);
-            } finally {
-                channelFactory.returnProducerChannel(channel);
             }
         }
     }
+
 
 
 
